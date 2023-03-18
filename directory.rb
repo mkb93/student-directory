@@ -1,3 +1,4 @@
+student_count = 11
 # first we print the student names
 puts "the students of Villians Academy"
 puts "----------------"
@@ -14,6 +15,6 @@ puts "Joffrey Baratheon"
 puts "Norman Bates"
 #then, we print the number of students
 print "Overall we have "
-print 11
+print student_count
 #here we highlight the use of print versus the use of puts
 puts " great students"
