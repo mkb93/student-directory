@@ -93,9 +93,7 @@ def interactive_menu
   loop do
     #print menu
     print_menu
-    # take the useer input and save it
-    selection = gets.chomp
-    process(selection)
+    process(gets.chomp)
   end
 end
 interactive_menu
