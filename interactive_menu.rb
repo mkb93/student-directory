@@ -3,6 +3,7 @@
 .length
 @cohorts = [:January, :April, :July, :November]
 #make an empty array
+@students = []
 #methods
 def input_students 
   puts 'please enter the name of the students and the cohort they are in'.center(@center_amount)
@@ -72,13 +73,9 @@ def show_students
   print(@students)
   print_footer
 end
-def interactive_menu
-  @students = []
-  loop do
-    #print menu
-    print_menu
-    # take the useer input and save it
-    selection = gets.chomp
+
+def process(selection)
+
     #do what the user asked
     case selection
       when "1"
@@ -90,6 +87,15 @@ def interactive_menu
       else
         puts 'Thats not an option'.center(@center_amount)
     end
+end
+
+def interactive_menu
+  loop do
+    #print menu
+    print_menu
+    # take the useer input and save it
+    selection = gets.chomp
+    process(selection)
   end
 end
 interactive_menu
