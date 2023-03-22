@@ -42,10 +42,10 @@ def print_header
   puts "----------------".center(@center_amount)
 end
 
-def print(names)
+def print_student_list
   @cohorts.each do |coh|
     
-    names.each do |name|
+    @students.each do |name|
       if name[:cohort] == coh
         puts "#{name[:name]} (#{name[:cohort]} cohort)".center(@center_amount)
       end
@@ -70,7 +70,7 @@ end
 
 def show_students
   print_header
-  print(@students)
+  print_student_list
   print_footer
 end
 
@@ -91,9 +91,9 @@ end
 
 def interactive_menu
   loop do
-    #print menu
     print_menu
     process(gets.chomp)
   end
 end
+
 interactive_menu
