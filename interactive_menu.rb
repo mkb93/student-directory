@@ -37,6 +37,15 @@ def input_students
   end
 end
 
+def load_students
+  file = File.open('students.csv', 'r')
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+end
+
 def save_students
   # open the file for writing
   file = File.open("students.csv", "w")
@@ -47,6 +56,7 @@ def save_students
   end
   file.close
 end
+
 def print_header
   puts "The students of Villians Academy".center(@center_amount)
   puts "----------------".center(@center_amount)
@@ -76,6 +86,7 @@ def print_menu
   puts 'press 1 for input the students'.center(@center_amount)
   puts 'press 2 for show the students'.center(@center_amount)
   puts 'press 3 save the list to students.csv'.center(@center_amount)
+  puts 'press 4 to load student list from studens.csv'.center(@center_amount)
   puts 'press 9 for exit'.center(@center_amount)
 end
 
@@ -95,6 +106,8 @@ def process(selection)
     show_students
       when "3"
         save_students
+      when "4"
+        load_students
       when "9"
         exit
       else
