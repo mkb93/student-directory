@@ -15,7 +15,7 @@ def input_students
   while !name.empty? do 
     #get student cohort
     puts 'what cohort are they in?'.center(@center_amount)
-    cohort = gets[0...-1].capitalize.to_sym
+    cohort = STDIN.gets[0...-1].capitalize.to_sym
     #check that the have entered a relevant cohort
     while !@cohorts.include?(cohort)
       #run as normal
@@ -26,19 +26,31 @@ def input_students
         puts 'please select one of 4 cohorts'
         .center(@center_amount)
         puts 'November, January, April, July'.center(@center_amount)
-        cohort = gets[0...-1].capitalize.to_sym
+        cohort = STDIN.gets[0...-1].capitalize.to_sym
       end
     end
     # add student to the array
     @students << {name: name, cohort: cohort}
     puts "Now we have #{@students.count} students".center(@center_amount)
     #get another name and cohort from user
-    name = gets[0...-1]
+    name = STDIN.gets[0...-1]
   end
 end
 
-def load_students
-  file = File.open('students.csv', 'r')
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exist?(filename)
+    load_students(filename)
+    puts "loaded #{@students.count} from #{filename}"
+  else
+    puts "sorry #{filename} does not exist"
+    exit
+  end
+end
+
+def load_students(fileName = 'students.csv')
+  file = File.open(fileName, 'r')
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
     @students << {name: name, cohort: cohort.to_sym}
@@ -118,8 +130,10 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
+
+try_load_students
 
 interactive_menu
