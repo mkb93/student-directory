@@ -2,8 +2,8 @@
 @center_amount ='please enter the name of the students and the cohort they are in'
 .length
 @cohorts = [:January, :April, :July, :November]
-#make an empty array
 @students = []
+
 #methods
 def input_students 
   puts 'please enter the name of the students and the cohort they are in'.center(@center_amount)
@@ -37,6 +37,16 @@ def input_students
   end
 end
 
+def save_students
+  # open the file for writing
+  file = File.open("students.csv", "w")
+  @students.each do |student|
+    student_data = [student[:name], student[:cohort]]
+    csv_line = student_data.join(',')
+    file.puts csv_line
+  end
+  file.close
+end
 def print_header
   puts "The students of Villians Academy".center(@center_amount)
   puts "----------------".center(@center_amount)
@@ -65,6 +75,7 @@ def print_menu
   # print the interactive menu method
   puts 'press 1 for input the students'.center(@center_amount)
   puts 'press 2 for show the students'.center(@center_amount)
+  puts 'press 3 save the list to students.csv'.center(@center_amount)
   puts 'press 9 for exit'.center(@center_amount)
 end
 
@@ -82,6 +93,8 @@ def process(selection)
         input_students
       when "2"
     show_students
+      when "3"
+        save_students
       when "9"
         exit
       else
