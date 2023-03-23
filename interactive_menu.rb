@@ -1,3 +1,4 @@
+require "csv"
 #variables
 @center_string ='please enter the name of the students and the cohort they are in'
 @center_amount =@center_string.length
@@ -66,14 +67,11 @@ def load_students(fileName = 'students.csv')
     puts 'try again or use default students.csv'
     return load_students(STDIN.gets.chomp)
   end
-  puts fileName
   count = 0
-  file = File.open(fileName, 'r') do |file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(',')
+  CSV.foreach(fileName) do |row|
+          name, cohort = row
       add_student(name, cohort.to_sym)
       count += 1
-    end
   end
   puts "loaded #{count} from #{fileName}"
 end
@@ -84,13 +82,12 @@ def save_students
   if saveFile.empty?
     return save_students
   end
-  file = File.open(saveFile, "w") do |file|
+  CSV.open(saveFile,"wb") do |csv|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort]]
-      csv_line = student_data.join(',')
-      file.puts csv_line
+      csv << [student[:name], student[:cohort]]
     end
-  end
+  end 
+  
   puts "we have saved data for #{@students.count} onto #{saveFile}"
 end
 
