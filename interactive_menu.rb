@@ -60,25 +60,38 @@ def try_load_students
 end
 
 def load_students(fileName = 'students.csv')
-  file = File.open(fileName, 'r')
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(',')
-    add_student(name, cohort.to_sym)
+
+ if !File.exist?(fileName)
+    puts "this file doesn't exist"
+    puts 'try again or use default students.csv'
+    return load_students(STDIN.gets.chomp)
   end
-  file.close
-  puts "loaded #{@students.count} from #{fileName}"
+  puts fileName
+  count = 0
+  file = File.open(fileName, 'r') do |file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(',')
+      add_student(name, cohort.to_sym)
+      count += 1
+    end
+  end
+  puts "loaded #{count} from #{fileName}"
 end
 
 def save_students
-  # open the file for writing
-  file = File.open("students.csv", "w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]]
-    csv_line = student_data.join(',')
-    file.puts csv_line
+  puts 'enter file name'
+  saveFile = STDIN.gets.chomp
+  if saveFile.empty?
+    return save_students
   end
-  file.close
-  puts "we have saved data for #{@students.count} onto students.csv"
+  file = File.open(saveFile, "w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]]
+      csv_line = student_data.join(',')
+      file.puts csv_line
+    end
+  end
+  puts "we have saved data for #{@students.count} onto #{saveFile}"
 end
 
 def print_header
@@ -110,8 +123,8 @@ def print_menu
   # print the interactive menu method
   puts 'press 1 for input the students'.center(@center_amount)
   puts 'press 2 for show the students'.center(@center_amount)
-  puts 'press 3 save the list to students.csv'.center(@center_amount)
-  puts 'press 4 to load student list from studens.csv'.center(@center_amount)
+  puts 'press 3 save the list to separate file'.center(@center_amount)
+  puts 'press 4 to load student list from file'.center(@center_amount)
   puts 'press 9 for exit'.center(@center_amount)
 end
 
@@ -128,11 +141,18 @@ def process(selection)
       when "1"
         input_students
       when "2"
-    show_students
+        show_students
       when "3"
         save_students
       when "4"
-        load_students
+        puts 'input filename to load from'.center(@center_amount)
+        puts 'or select default by leaving blank'.center(@center_amount)
+        input = STDIN.gets.chomp
+        if input.empty?
+          load_students()
+        else
+          load_students(input)
+        end
       when "9"
         exit
       else
