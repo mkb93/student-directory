@@ -5,6 +5,10 @@
 @students = []
 
 #methods
+def add_student(name, cohort)
+  @students << {name: name, cohort: cohort}
+end
+
 def input_students 
   puts 'please enter the name of the students and the cohort they are in'.center(@center_amount)
   puts "To finish, do not enter a name and press enter".center(@center_amount)
@@ -30,7 +34,7 @@ def input_students
       end
     end
     # add student to the array
-    @students << {name: name, cohort: cohort}
+    add_student(name, cohort)
     puts "Now we have #{@students.count} students".center(@center_amount)
     #get another name and cohort from user
     name = STDIN.gets[0...-1]
@@ -39,7 +43,9 @@ end
 
 def try_load_students
   filename = ARGV.first
-  return if filename.nil?
+  if filename.nil?
+    filename = 'students.csv'
+  end
   if File.exist?(filename)
     load_students(filename)
     puts "loaded #{@students.count} from #{filename}"
@@ -53,7 +59,7 @@ def load_students(fileName = 'students.csv')
   file = File.open(fileName, 'r')
   file.readlines.each do |line|
     name, cohort = line.chomp.split(',')
-    @students << {name: name, cohort: cohort.to_sym}
+    add_student(name, cohort.to_sym)
   end
   file.close
 end
