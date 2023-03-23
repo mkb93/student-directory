@@ -53,7 +53,6 @@ def try_load_students
   end
   if File.exist?(filename)
     load_students(filename)
-    puts "loaded #{@students.count} from #{filename}"
   else
     puts "sorry #{filename} does not exist"
     exit
@@ -67,6 +66,7 @@ def load_students(fileName = 'students.csv')
     add_student(name, cohort.to_sym)
   end
   file.close
+  puts "loaded #{@students.count} from #{fileName}"
 end
 
 def save_students
@@ -78,6 +78,7 @@ def save_students
     file.puts csv_line
   end
   file.close
+  puts "we have saved data for #{@students.count} onto students.csv"
 end
 
 def print_header
@@ -87,13 +88,14 @@ end
 
 def print_student_list
   @cohorts.each do |coh|
-    
+    #we use 2 eaches to separate students from different cohorts
     @students.each do |name|
       if name[:cohort] == coh
         puts "#{name[:name]} (#{name[:cohort]} cohort)".center(@center_amount)
       end
     end
   end
+  puts ""
 end
 
 def print_footer
