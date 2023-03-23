@@ -1,6 +1,6 @@
 #variables
-@center_amount ='please enter the name of the students and the cohort they are in'
-.length
+@center_string ='please enter the name of the students and the cohort they are in'
+@center_amount =@center_string.length
 @cohorts = [:January, :April, :July, :November]
 @students = []
 
@@ -9,30 +9,35 @@ def add_student(name, cohort)
   @students << {name: name, cohort: cohort}
 end
 
+def add_cohort
+  puts 'what cohort are they in?'.center(@center_amount)
+  cohort = STDIN.gets[0...-1].capitalize.to_sym
+  #check that the have entered a relevant cohort
+  while !@cohorts.include?(cohort)
+    #run as normal
+    if cohort.empty?
+      # use default value for student cohort
+      cohort = :November
+    else
+      puts 'please select one of 4 cohorts'
+      .center(@center_amount)
+      puts 'November, January, April, July'.center(@center_amount)
+      cohort = STDIN.gets[0...-1].capitalize.to_sym
+    end
+  end
+  cohort
+end
+
 def input_students 
-  puts 'please enter the name of the students and the cohort they are in'.center(@center_amount)
+  puts @center_string.center(@center_amount)
   puts "To finish, do not enter a name and press enter".center(@center_amount)
   
   #get student name
-  name = gets[0...-1]
+  name = STDIN.gets[0...-1]
   
   while !name.empty? do 
     #get student cohort
-    puts 'what cohort are they in?'.center(@center_amount)
-    cohort = STDIN.gets[0...-1].capitalize.to_sym
-    #check that the have entered a relevant cohort
-    while !@cohorts.include?(cohort)
-      #run as normal
-      if cohort.empty?
-        # use default value for student cohort
-        cohort = :november
-      else
-        puts 'please select one of 4 cohorts'
-        .center(@center_amount)
-        puts 'November, January, April, July'.center(@center_amount)
-        cohort = STDIN.gets[0...-1].capitalize.to_sym
-      end
-    end
+    cohort = add_cohort
     # add student to the array
     add_student(name, cohort)
     puts "Now we have #{@students.count} students".center(@center_amount)
