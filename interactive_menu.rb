@@ -62,7 +62,7 @@ end
 
 def load_students(fileName = 'students.csv')
 
- if !File.exist?(fileName)
+  if !File.exist?(fileName)
     puts "this file doesn't exist"
     puts 'try again or use default students.csv'
     return load_students(STDIN.gets.chomp)
@@ -87,7 +87,6 @@ def save_students
       csv << [student[:name], student[:cohort]]
     end
   end 
-  
   puts "we have saved data for #{@students.count} onto #{saveFile}"
 end
 
