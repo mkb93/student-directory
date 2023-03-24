@@ -3,3 +3,6 @@
 puts __FILE__
 #the second one doesn't
 puts File.basename(__FILE__)
+
+file = File.read(__FILE__)
+puts file 
